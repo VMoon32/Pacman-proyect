@@ -1,0 +1,117 @@
+import greenfoot.*;
+/**
+ * Write a description of class Pacman here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class Pacman extends Actor
+{    
+    
+    private static final int OFFSET = 5;
+    private int offsetX = 0;
+    private int offsetY = 0;
+    
+    private String []images = new String[]{
+        "images/pac2.png",
+        "images/pac5.png"
+    };
+    private int currentImage = 0;
+    private int delayMouth = 0;    
+    Pacman(){
+        setImage(images[currentImage]);
+    }
+    /**
+     * Act - do whatever the Pacman wants to do. This method is called whenever
+     * the 'Act' or 'Run' button gets pressed in the environment.
+     */
+    public void act()
+    {
+        moveMouth();
+        
+        handleKeys();
+        
+        eatItems();
+        
+        end();
+        
+    }
+        
+    private void moveMouth(){
+        delayMouth++;
+        if(delayMouth == 10){
+            currentImage = (currentImage + 1) % images.length;
+            setImage(images[currentImage]);
+            delayMouth = 0;
+        }
+    }
+    
+    private void handleKeys(){        
+        setLocation(getX() + offsetX, getY() + offsetY);
+        if(isTouching(Wall.class)){
+                setLocation(getX() - offsetX, getY() - offsetY);
+            }
+        
+        if(Greenfoot.isKeyDown("Right")){ 
+            offsetX = OFFSET;
+            offsetY = 0;
+            setRotation(0);
+            if(isTouching(Wall.class)){
+                setLocation(getX() - OFFSET, getY());
+            }
+        } else if(Greenfoot.isKeyDown("Left")){
+            offsetX = -OFFSET;
+            offsetY = 0;
+            setRotation(180);
+            if(isTouching(Wall.class)){
+                setLocation(getX() + OFFSET, getY());
+            }
+        } else if(Greenfoot.isKeyDown("Up")){
+            offsetX = 0;
+            offsetY = -OFFSET;
+            setRotation(270);
+            if(isTouching(Wall.class)){
+                setLocation(getX(), getY() + OFFSET);
+            }
+        } else if(Greenfoot.isKeyDown("Down")){
+            offsetX = 0;
+            offsetY = OFFSET;
+            setRotation(90);
+            if(isTouching(Wall.class)){
+                setLocation(getX(), getY() - OFFSET);
+            }
+        }
+        /*MI SPRITE SE ATORABA PROFE, BUSQUÉ OTRO MÉTODO, COMENTO SOLO PARA 
+        QUE SEPA EL PORQUE NO UTILICÉ SU MÉTODO DE LA CLASE:*/
+        
+    }
+    
+    private void end(){
+          if(isTouching(Red.class)){
+                End end = new End();
+                
+                World world;
+                world = getWorld();
+                MyWorld mundo = (MyWorld)world;
+                mundo.addObject(end,298,201);
+            }
+        
+    }
+    
+    
+    private void eatItems(){
+
+        Item item = (Item)getOneIntersectingObject(Item.class);
+        PointsCounter pointsCounter = new PointsCounter();
+        
+        if(item != null){
+            World world;
+            world = getWorld();
+            world.removeObject(item);
+            MyWorld mundo = (MyWorld)world;
+            PointsCounter cont = mundo.getPointsCounter();
+            cont.addPoints(item.getScore());
+        }
+        
+    }
+}
