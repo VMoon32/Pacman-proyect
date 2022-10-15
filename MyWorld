@@ -1,0 +1,118 @@
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+
+/**
+ * Write a description of class MyWorld here.
+ * 
+ * @author (your name) 
+ * @version (a version number or a date)
+ */
+public class MyWorld extends World
+{
+    PointsCounter cont = new PointsCounter();
+    /**
+     * Constructor for objects of class MyWorld.
+     * 
+     */
+    public MyWorld()
+    {    
+        // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
+        super(600, 400, 1); 
+        prepare();
+    }
+    
+    /**
+     * Prepare the world for the start of the program.
+     * That is: create the initial objects and add them to the world.
+     */
+    private void prepare()
+    {
+        Pacman pacman = new Pacman();
+        addObject(pacman,69,78);
+
+        map();
+
+        addObject(cont, 500,18);
+
+        addItems();
+
+        ghost();
+        
+    }
+
+    
+     public PointsCounter getPointsCounter(){
+        return cont;
+    }
+    
+    private void addItems(){
+        addObject(new fruit1(), 200, 200);
+        addObject(new fruit1(), 200, 300);
+        addObject(new fruit1(), 400, 200);
+        addObject(new fruit1(), 400, 300);
+        
+        
+        addObject(new fruit2(), 400, 125);
+        addObject(new fruit2(), 400, 50);
+        addObject(new fruit2(),559,362);
+        
+        addObject(new fruit3(), 200, 125);
+        addObject(new fruit3(), 200, 50);
+    }
+    
+    private void map(){
+        for(int y = 5; y < 150; y+=13){ 
+            Wall wall = new Wall();
+            addObject(wall,5,y);
+        }
+        
+        for(int y = 250; y < 400; y+=13){ 
+            Wall wall = new Wall();
+            addObject(wall,5,y);
+        }
+        
+        for(int y = 18; y < 150; y+=13){ 
+            Wall wall = new Wall();
+            addObject(wall,152,y);
+        }
+        
+        for(int y = 17; y < 150; y+=13){ 
+            Wall wall = new Wall();
+            addObject(wall,444,y);
+        }
+        
+        for(int x = 5; x < 595; x+=13){
+            Wall wall = new Wall();
+            addObject(wall,x,5);
+        }
+        
+        for(int y = 5; y < 150; y+=13){ 
+            Wall wall = new Wall();
+            addObject(wall,595,y);
+        }
+        
+        for(int y = 250; y < 400; y+=13){
+            Wall wall = new Wall();
+            addObject(wall,595,y);
+        }
+    
+        for(int x = 5; x < 595; x+=13){
+            Wall wall = new Wall();
+            addObject(wall,x,395);
+        }
+        
+        for(int x = 528; x < 595; x+=13){
+            Wall wall = new Wall();
+            addObject(wall,x,324);
+        }
+        
+        for(int x = 152; x < 444; x+=13){
+            Wall wall = new Wall();
+            addObject(wall,x,269);
+        }
+    }
+    
+    private void ghost(){
+        int direction = 45;
+        addObject(new Red(direction), 300, 200);
+    }
+}
